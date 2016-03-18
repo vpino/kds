@@ -15,23 +15,26 @@ def homepage(request):
                               context_instance=RequestContext(request))
 
 def get_active_hosts():
-	"""
+    """
     List all pcs, conectados al servidor
     """
+    """
+    default_gateway = netifaces.gateways().get('default').values()[0][0]
 
-	default_gateway = netifaces.gateways().get('default').values()[0][0]
+    nm = nmap.PortScanner()
 
-	nm = nmap.PortScanner()
+    scan_result = nm.scan(default_gateway + "/24", None, '-sP')
 
-	scan_result = nm.scan(default_gateway + "/24", None, '-sP')
+    active_hosts = scan_result.get('scan').keys()
 
-	active_hosts = scan_result.get('scan').keys()
+    if default_gateway in active_hosts:
 
-	if default_gateway in active_hosts:
+        active_hosts.remove(default_gateway)
 
-		active_hosts.remove(default_gateway)
+    return active_hosts
+    """
 
-	return active_hosts
+    return ["10.16.106.147"]
 
 class PcList(APIView):
     """
