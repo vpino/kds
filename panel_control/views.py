@@ -5,14 +5,41 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
+from common.charms.repository import LocalCharmRepository
+from common.charms.directory import CharmDirectory
+from common.recipes.recipe import RecipeDir
+from common.utils import get_path
 import nmap 
 import netifaces
 import json
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SERVICEDIR = BASE_DIR + '/data/services'
+
+class ServiceObject(object):
+    def __init__(self, initial=None):
+        self.__dict__['_data'] = {}
+        
+        if hasattr(initial, 'items'):
+            self.__dict__['_data'] = initial
+
+    def __getattr__(self, name):
+        return self._data.get(name, None)
+
+    def __setattr__(self, name, value):
+        self.__dict__['_data'][name] = value
+
+    def to_dict(self):
+        return self._data
+
 
 def homepage(request):
 
     return render_to_response('index.html',
                               context_instance=RequestContext(request))
+
+
 
 def get_active_hosts():
     """
@@ -51,3 +78,23 @@ class PcList(APIView):
         #lists = json.dumps(pc)
 
         return Response(pc)
+
+class ServiceMetadataResource(APIView):
+    """
+    List all Recipes
+    """
+
+    #Especificamos como retornara la data, en este caso formato json
+    renderer_classes = (JSONRenderer, )
+
+    def get(self, request, format=None):
+        
+        SERVICE = RecipeDir(get_path([SERVICEDIR, 'correo']))
+        
+        return Response([ServiceObject({
+                    'name': SERVICE.metadata.name,
+                    'summary': SERVICE.metadata.summary,
+                    'maintainer': SERVICE.metadata.maintainer,
+                    'description': SERVICE.metadata.description,
+                    'components' : SERVICE.metadata.components.items()
+                })])

@@ -27,15 +27,15 @@ deb http://seguridad.canaima.softwarelibre.gob.ve jessie/updates main contrib no
 
 - adduser kds
 
-8. Accedemos como su y creamos la carpeta .shh y el archivo autherized_keys
+8. Accedemos como su y creamos la carpeta .shh y el archivo authorized_keys
 
 - su kds
 - mkdir .ssh
-- nano .ssh/autherized_keys
+- nano .ssh/authorized_keys
 
 9. Copiamos la llave ssh publica del maestro en el archivo recien creado
 
-- echo "llaveshh" > .ssh/autherized_keys
+- echo "llaveshh" > .ssh/authorized_keys
 
 10. Agregamos la ip del contenedor a nuestro archivo /etc/ansible/hosts
 

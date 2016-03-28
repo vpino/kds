@@ -3,22 +3,20 @@ from django.contrib import admin
 from .views import IndexView
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
-from panel_control.views import PcList
+from panel_control.views import PcList, ServiceMetadataResource
 from kds_client.views import HardwareInformation
 
 router = routers.SimpleRouter()
 router.register(r'pclist', PcList, 'PcList')
 router.register(r'hdInfo', HardwareInformation, 'hdInfo')
 
-
 urlpatterns = [
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^api/v1/', include(router.urls)),
 	#url(r'^$', homepage, name='index'),
+	url(r'^ServiceMetadataResource/$', ServiceMetadataResource.as_view()),
 	url(r'^pclist/$', PcList.as_view()),
 	url(r'^hdInfo/$', HardwareInformation.as_view()),
 	url('^.*$', IndexView.as_view(), name='index'),
-
-
 
 ]
