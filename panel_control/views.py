@@ -87,9 +87,9 @@ class ServiceMetadataResource(APIView):
     #Especificamos como retornara la data, en este caso formato json
     renderer_classes = (JSONRenderer, )
 
-    def get(self, request, format=None):
+    def get(self, request, service_name, format=None):
         
-        SERVICE = RecipeDir(get_path([SERVICEDIR, 'correo']))
+        SERVICE = RecipeDir(get_path([SERVICEDIR, 'service_name']))
         
         return Response([ServiceObject({
                     'name': SERVICE.metadata.name,
@@ -98,3 +98,34 @@ class ServiceMetadataResource(APIView):
                     'description': SERVICE.metadata.description,
                     'components' : SERVICE.metadata.components.items()
                 })])
+
+class ServiceConfigResource(APIView):
+    """
+    List all parametros para ejecutar el playbook
+    """
+
+    #Especificamos como retornara la data, en este caso formato json
+    renderer_classes = (JSONRenderer, )
+
+    def get(self, request, service_name, format=None):
+
+        SERVICE = CharmDirectory(get_path([SERVICEDIR, service_name]))
+        
+        config = {}
+
+        campos = []
+
+        for k, v in SERVICE.config._data.iteritems():
+            d = {}
+            d['field_name'] = k
+            d['nombre'] = v.get('name', None)
+            d['default'] = v.get('default', None)
+            d['tipo'] = v.get('type', None)
+            campos.append(d)
+
+        config['campos'] = campos
+        config['ipadd'] = ''
+        config['username'] = ''
+        config['passwd'] = ''
+
+        return Response (config)
