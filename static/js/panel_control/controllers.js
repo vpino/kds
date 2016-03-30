@@ -4,21 +4,26 @@
 
 var pclistControllers = angular.module('pclistControllers', []);
 
+/*
 pclistControllers.controller('PcListCtrl', ['$scope', 'Pc',
   function($scope, Pc) {
     $scope.pcs = Pc.query();
+    $scope.ho = 'aloha'
   }]);
 
+*/
 
-/* 
-var phonecatApp = angular.module('panelApp', []);
 
-phonecatApp.controller('PhoneListCtrl', ['$scope', '$http', function($scope, $http) {
-  $http.get('http://127.0.0.1:8000/pclist/').success(function(data) {
-    $scope.phones = data;
+pclistControllers.controller('PcListCtrl', ['$scope', '$http', function($scope, $http) {
+  $http.get('pclist/').success(function(data) {
+    $scope.pcs = data;
   });
 
-  $scope.orderProp = 'age';
 }]);
 
-*/
+pclistControllers.controller('MakeService', ['$scope', '$http', function($scope, $http) {
+  $http.get('ServiceConfigResource/correo').success(function(data) {
+    $scope.MakeService = data;
+  });
+
+}]);

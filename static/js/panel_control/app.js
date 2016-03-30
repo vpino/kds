@@ -3,7 +3,9 @@
 /* App Module */
 
 var panelApp = angular.module('panelApp', [
-  'ngRoute'
+  'ngRoute',
+  'pclistControllers',
+  'pclistServices'
   ]);
 
  panelApp.config(['$routeProvider', '$locationProvider',
@@ -11,10 +13,11 @@ var panelApp = angular.module('panelApp', [
     $routeProvider.
       when('/', {
         templateUrl: 'static/templates/panel-control.html',
-        controller: ''
+        controller: 'PcListCtrl'
       }).
       when('/otra', {
         templateUrl: 'static/templates/otro.html',
+        controller: 'MakeService'
       }).
       otherwise({
         redirectTo: '/'

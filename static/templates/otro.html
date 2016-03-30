@@ -1,1 +1,40 @@
-otro contenido
+<div class="row">
+	<form class="col s12">
+		<div class="row">
+			
+
+			<div class="input-field col s6" data-ng-repeat="service in MakeService.campos">
+
+				<div ng-if="service.tipo=='string'">
+
+					<div>
+						
+					<i class="material-icons prefix">account_circle</i>
+					<input id="icon_prefix" type="text" class="validate" id='default' ng-model="service.default" placeholder="service.default">
+					<label for="icon_prefix">Default</label>
+
+					</div>
+
+					<div> 
+					<i class="material-icons prefix">account_circle</i>
+					<input id="icon_prefix" type="text" class="validate" id='nombre' ng-model="service.nombre" placeholder="service.nombre">
+					<label for="icon_prefix">Nombre</label>
+
+					</div>
+
+					<div>
+
+					<i class="material-icons prefix">account_circle</i>
+					<input id="icon_prefix" type="text" class="validate" id='field_name' ng-model="service.field_name" placeholder="service.field_name">
+					<label for="icon_prefix">Field Name</label>
+
+					</div>
+				</div>
+
+				
+				
+			</div>
+
+		</div>
+	</form>
+</div>

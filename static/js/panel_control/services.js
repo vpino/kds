@@ -13,3 +13,15 @@ pclistServices.factory('Pc', ['$resource',
       		}
     });
   }]);
+
+pclistServices.factory('Receta', ['$resource',
+  function($resource){
+    return $resource('ServiceConfigResource/:receta', {}, {
+      query: {
+      	method:'GET',  
+      	params:{receta:'ServiceConfigResource'}, 
+      	isArray:true
+      		}
+    });
+  }]);
+
