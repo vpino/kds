@@ -121,6 +121,7 @@ class ServiceConfigResource(APIView):
             d['nombre'] = v.get('name', None)
             d['default'] = v.get('default', None)
             d['tipo'] = v.get('type', None)
+            d['items'] = v.get('items', None)
             campos.append(d)
 
         config['campos'] = campos

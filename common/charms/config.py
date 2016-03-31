@@ -28,7 +28,7 @@ import yaml
 from common import serializer
 from common.format import YAMLFormat
 from common.schema import (SchemaError, KeyDict, Dict, String,
-                                  Constant, OneOf, Int, Float)
+                                  Constant, OneOf, Int, Float, List)
 from common.charms.errors import (ServiceConfigError,
                                          ServiceConfigValueError)
 
@@ -36,8 +36,9 @@ OPTION_SCHEMA = KeyDict({'type': OneOf(Constant('string'),
                                        Constant('str'),
                                        Constant('int'),
                                        Constant('boolean'),
-                                       Constant('float')),
-                         'default': OneOf(String(), Int(), Float()),
+                                       Constant('float'),
+                                       Constant('list')),
+                         'default': OneOf(String(), Int(), Float(), List(String())),
                          'description': String()},
                         optional=['default', 'description'])
 
@@ -171,9 +172,11 @@ class ConfigOptions(object):
 
         # apply validation
         validator = validation_kinds[kind]
+        print validator
         value, valid = validator(value, self._data[name])
 
         if not valid:
+            print name, value
             # Return value such that it roundtrips; this allows us to
             # report back the boolean false instead of the Python
             # output format, False
@@ -252,9 +255,17 @@ def validate_boolean(value, options):
         return False, True
     return value, False
 
+def validate_list(value, options):
+    """Validate a list."""
+    if isinstance(value, list) and len(value) > 0:
+        return value, True
+
+    return value, False
+  
 # maps service option types to callables
 validation_kinds = {'string': validate_str,
                     'str': validate_str,
                     'int': validate_int,
                     'float': validate_float,
-                    'boolean': validate_boolean}
+                    'boolean': validate_boolean,
+                    'list': validate_list}
