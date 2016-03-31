@@ -19,11 +19,16 @@ pclistControllers.controller('PcListCtrl', ['$scope', '$http', function($scope, 
     $scope.pcs = data;
   });
 
+
 }]);
 
 pclistControllers.controller('MakeService', ['$scope', '$http', function($scope, $http) {
   $http.get('ServiceConfigResource/correo').success(function(data) {
     $scope.MakeService = data;
   });
+
+  $scope.getNumber = function(num) {
+    return new Array(num);   
+  }
 
 }]);
