@@ -61,7 +61,7 @@ def get_active_hosts():
     return active_hosts
     """
 
-    return ["10.16.106.147"]
+    return {"10.16.106.147"}
 
 class PcList(APIView):
     """
@@ -69,7 +69,7 @@ class PcList(APIView):
     """
 
     #Especificamos como retornara la data, en este caso formato json
-    renderer_classes = (JSONRenderer, )
+    #renderer_classes = (JSONRenderer, )
 
     def get(self, request, format=None):
         
@@ -85,7 +85,7 @@ class ServiceMetadataResource(APIView):
     """
 
     #Especificamos como retornara la data, en este caso formato json
-    renderer_classes = (JSONRenderer, )
+    #renderer_classes = (JSONRenderer, )
 
     def get(self, request, service_name, format=None):
         
@@ -105,28 +105,50 @@ class ServiceConfigResource(APIView):
     """
 
     #Especificamos como retornara la data, en este caso formato json
-    renderer_classes = (JSONRenderer, )
+    #renderer_classes = (JSONRenderer, )
 
-    def get(self, request, service_name, format=None):
+    def get(self, request, format=None):
 
-        SERVICE = CharmDirectory(get_path([SERVICEDIR, service_name]))
+        recipe_Name = request.query_params.get('name', None)
         
-        config = {}
+        if recipe_Name:
 
-        campos = []
+            SERVICE = CharmDirectory(get_path([SERVICEDIR, recipe_Name]))
+            
+            if SERVICE:
+            
+                config = {}
 
-        for k, v in SERVICE.config._data.iteritems():
-            d = {}
-            d['field_name'] = k
-            d['nombre'] = v.get('name', None)
-            d['default'] = v.get('default', None)
-            d['tipo'] = v.get('type', None)
-            d['items'] = v.get('items', None)
-            campos.append(d)
+                campos = []
 
-        config['campos'] = campos
-        config['ipadd'] = ''
-        config['username'] = ''
-        config['passwd'] = ''
+                for k, v in SERVICE.config._data.iteritems():
+                    d = {}
+                    d['field_name'] = k
+                    d['nombre'] = v.get('name', None)
+                    d['default'] = v.get('default', None)
+                    d['tipo'] = v.get('type', None)
+                    d['items'] = v.get('items', None)
+                    campos.append(d)
 
-        return Response (config)
+                config['campos'] = campos
+                config['ipadd'] = ''
+                config['username'] = ''
+                config['passwd'] = ''
+
+                return Response (config)
+
+            else:
+
+                return Response (status=status.HTTP_404_NOT_FOUND)
+
+        return Response (status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
+
+    def post(self, request, *args, **kwargs):
+
+        print request
+        print args

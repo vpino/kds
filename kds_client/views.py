@@ -69,7 +69,7 @@ class HardwareInformation(APIView):
 	"""
 
 	#Especificamos como retornara la data, en este caso formato json
-	renderer_classes = (JSONRenderer, )
+	#renderer_classes = (JSONRenderer, )
 
 	def get(self, request, format=None):
 

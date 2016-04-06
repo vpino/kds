@@ -2,26 +2,21 @@
 
 /* Services */
 
-var pclistServices = angular.module('pclistServices', ['ngResource']);
+var ManageServices = angular.module('ManageServices', ['ngResource']);
 
-pclistServices.factory('Pc', ['$resource',
+ManageServices.factory('Recipe', ['$resource',
   function($resource){
-    return $resource('pclist/', {}, {
+    return $resource('/ServiceConfigResource/', {}, {
+      
       query: {
+        params: {name: '@name'},
       	method:'GET',  
-      	isArray:true
-      		}
-    });
-  }]);
+      	isArray:true,
+        transformResponse: function(data){
+               return angular.fromJson(data).objects;
+           }
+      	}
 
-pclistServices.factory('Receta', ['$resource',
-  function($resource){
-    return $resource('ServiceConfigResource/:receta', {}, {
-      query: {
-      	method:'GET',  
-      	params:{receta:'ServiceConfigResource'}, 
-      	isArray:true
-      		}
     });
   }]);
 

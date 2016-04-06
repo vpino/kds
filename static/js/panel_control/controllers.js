@@ -2,33 +2,17 @@
 
 /* Controllers */
 
-var pclistControllers = angular.module('pclistControllers', []);
+var ManageControllers = angular.module('ManageControllers', []);
 
-/*
-pclistControllers.controller('PcListCtrl', ['$scope', 'Pc',
-  function($scope, Pc) {
-    $scope.pcs = Pc.query();
-    $scope.ho = 'aloha'
-  }]);
+ManageControllers.controller('recipeController', ['$scope', '$location', '$routeParams', 'Recipe', recipeController]);
 
-*/
+    function recipeController($scope, $location, $routeParams, Recipe){
+        
+        console.log($routeParams);
 
+        $scope.Params = Recipe.get({name:$routeParams.name});
 
-pclistControllers.controller('PcListCtrl', ['$scope', '$http', function($scope, $http) {
-  $http.get('pclist/').success(function(data) {
-    $scope.pcs = data;
-  });
+        console.log($scope.Params);     
 
-
-}]);
-
-pclistControllers.controller('MakeService', ['$scope', '$http', function($scope, $http) {
-  $http.get('ServiceConfigResource/correo').success(function(data) {
-    $scope.MakeService = data;
-  });
-
-  $scope.getNumber = function(num) {
-    return new Array(num);   
-  }
-
-}]);
+          
+    }
